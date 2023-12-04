@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenThumb.Migrations
 {
     [DbContext(typeof(GreenThumbDbContext))]
-    [Migration("20231204122750_Initial")]
+    [Migration("20231204214929_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

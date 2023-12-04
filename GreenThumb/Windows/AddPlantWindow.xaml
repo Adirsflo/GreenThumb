@@ -5,8 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GreenThumb.Windows"
         mc:Ignorable="d"
-        Title="AddPlantWindow" Height="450" Width="800">
+        Title="Green Thumb - Add Plant" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#023733">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="190"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Column="5" Grid.Row="1" Margin="-20 0 0 0" Background="#B9E458" CornerRadius="5"/>
+        <Border Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="-10 -25 -2 0" Background="#B9E458" CornerRadius="5"/>
+        <Border Grid.Column="2" Grid.Row="6" Grid.RowSpan="4" Grid.ColumnSpan="3" Margin="-10 5 0 0" Background="#B9E458" CornerRadius="10"/>
+
+        <Image Grid.Column="5" Grid.Row="1" HorizontalAlignment="Left" Height="30" Width="30" Margin="-5 0 0 0" Source="/Image/GreenThumbIMG.png" Stretch="UniformToFill"/>
+
+        <Label Grid.Column="3" Grid.Row="1"  Content="Add Plant" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="25" FontFamily="Arial" FontWeight="Heavy" Foreground="#B9E458"/>
+        <Label Grid.Column="2" Grid.Row="3" Content="Plant Name" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="2" Grid.Row="4" Content="Plant Description" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" Content="Care Advice" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="2" Grid.Row="7" Content="Title" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="2" Grid.Row="8" Content="Instructions" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+
+        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 10 8"/>
+
+        <TextBox Name="txtNewPlantName" Grid.Column="3" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
+        <TextBox Name="txtNewPlantDescription" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
+        <TextBox Name="txtNewInstructionName" Grid.Column="3" Grid.Row="7" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
+        <TextBox Name="txtNewInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Center" Visibility="Visible"/>
+
+        <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
+            <Hyperlink Click="blkInformation_Click" FontStyle="Normal">
+                <Hyperlink.Style>
+                    <Style TargetType="Hyperlink"
+                    BasedOn="{StaticResource {x:Type Hyperlink}}">
+                        <Setter Property="Foreground" Value="#023733"/>
+                    </Style>
+                </Hyperlink.Style>
+                Information
+            </Hyperlink>
+        </TextBlock>
+
+        <Button Name="btnBack" Grid.Column="5" Grid.Row="1" Height="25" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Back" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
+        <Button Name="btnAddPlant" Grid.Column="4" Grid.Row="5" Height="30" Width="80" Margin="5 0 0 7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add Plant" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733"/>
+        <Button Name="btnAddInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="10 0 0 0" HorizontalAlignment="Left" Content="Add" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
+        <Button Name="btnRemoveInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Remove" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
     </Grid>
 </Window>
