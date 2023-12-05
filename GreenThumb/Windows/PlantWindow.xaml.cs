@@ -14,7 +14,9 @@ namespace GreenThumb.Windows
 
         private void blkMyGarden_Click(object sender, RoutedEventArgs e)
         {
-            // Open Garden
+            MyGardenWindow myGardenWindow = new();
+            myGardenWindow.Show();
+            Close();
         }
         private void blkInformation_Click(object sender, RoutedEventArgs e)
         {
