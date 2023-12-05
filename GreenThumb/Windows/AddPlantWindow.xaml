@@ -46,9 +46,9 @@
         <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 10 8"/>
 
         <TextBox Name="txtNewPlantName" Grid.Column="3" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
-        <TextBox Name="txtNewPlantDescription" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Center" TextWrapping="Wrap"/>
+        <TextBox Name="txtNewPlantDescription" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
         <TextBox Name="txtNewInstructionName" Grid.Column="3" Grid.Row="7" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
-        <TextBox Name="txtNewInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Center" Visibility="Visible"/>
+        <TextBox Name="txtNewInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
 
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
             <Hyperlink Click="blkInformation_Click" FontStyle="Normal">
@@ -62,9 +62,9 @@
             </Hyperlink>
         </TextBlock>
 
-        <Button Name="btnBack" Grid.Column="5" Grid.Row="1" Height="25" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Back" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
-        <Button Name="btnAddPlant" Grid.Column="4" Grid.Row="5" Height="30" Width="80" Margin="5 0 0 7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add Plant" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733"/>
-        <Button Name="btnAddInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="10 0 0 0" HorizontalAlignment="Left" Content="Add" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
-        <Button Name="btnRemoveInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Remove" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458"/>
+        <Button Name="btnBack" Grid.Column="5" Grid.Row="1" Height="25" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Back" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnBack_Click"/>
+        <Button Name="btnAddPlant" Grid.Column="4" Grid.Row="5" Height="30" Width="80" Margin="5 0 0 7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add Plant" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733" Click="btnAddPlant_Click"/>
+        <Button Name="btnAddInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="10 0 0 0" HorizontalAlignment="Left" Content="Add" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnAddInstruction_Click"/>
+        <Button Name="btnRemoveInstruction" Grid.Column="2" Grid.Row="9" Height="30" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Remove" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnRemoveInstruction_Click"/>
     </Grid>
 </Window>

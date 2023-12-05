@@ -32,6 +32,14 @@ namespace GreenThumb.Windows
             string newPassword;
             string confirmPassword;
 
+
+            // TRYING BUTTONS
+
+            MessageBox.Show("Account created!", "Account created");
+
+            SignInWindow signInWindow = new();
+            signInWindow.Show();
+            Close();
         }
 
         private void CancelToSignInWindow() // Method for returning to SignInWindow

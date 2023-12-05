@@ -21,7 +21,9 @@ namespace GreenThumb.Windows
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e)
         {
-
+            PlantWindow plantWindow = new();
+            plantWindow.Show();
+            Close();
         }
     }
 }
