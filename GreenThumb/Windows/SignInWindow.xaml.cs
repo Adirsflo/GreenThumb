@@ -1,10 +1,8 @@
-﻿using System.Windows;
+﻿using GreenThumb.Managers;
+using System.Windows;
 
 namespace GreenThumb.Windows
 {
-    /// <summary>
-    /// Interaction logic for SignInWindow.xaml
-    /// </summary>
     public partial class SignInWindow : Window
     {
         public SignInWindow()
@@ -19,11 +17,19 @@ namespace GreenThumb.Windows
             Close();
         }
 
-        private void btnSignIn_Click(object sender, RoutedEventArgs e)
+        private void btnSignIn_Click(object sender, RoutedEventArgs e) // Attempting to log in user
         {
-            PlantWindow plantWindow = new();
-            plantWindow.Show();
-            Close();
+            string username = txtUsername.Text;
+            string password = txtPassword.Password;
+
+            bool isSignedIn = UserManager.SignInUser(username, password);
+
+            if (isSignedIn)
+            {
+                PlantWindow plantWindow = new();
+                plantWindow.Show();
+                Close();
+            }
         }
     }
 }

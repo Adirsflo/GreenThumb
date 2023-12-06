@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace GreenThumb.Windows
 {
@@ -7,10 +8,27 @@ namespace GreenThumb.Windows
     /// </summary>
     public partial class PlantDetailsWindow : Window
     {
-        public PlantDetailsWindow()
+        public PlantDetailsWindow(ListBoxItem item)
         {
             InitializeComponent();
+
+            UpdateUi(item);
         }
+
+        private void UpdateUi(ListBoxItem item)
+        {
+            if (item != null)
+            {
+                // lblPlantName
+                // txtPlantDescription
+                // txtInstructionName
+                // txtInstructionDescription
+                // lstAddInstruction 
+                // CLEAR lstAdInstructions
+                // rbIsAddedToGarden (rbAddedToGardenTrue // rbAddedToGardenFalse)
+            }
+        }
+
         private void blkInformation_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Information about this window till be showed here", "Information");

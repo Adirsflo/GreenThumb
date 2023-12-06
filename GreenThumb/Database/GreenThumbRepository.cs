@@ -4,7 +4,7 @@ namespace GreenThumb.Database
 {
     internal class GreenThumbRepository<T> where T : class
     {
-        private readonly GreenThumbDbContext _context;
+        protected readonly GreenThumbDbContext _context;
         private readonly DbSet<T> _dbSet;
 
         public GreenThumbRepository(GreenThumbDbContext context)

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using GreenThumb.Database;
+using GreenThumb.Models;
+using System.Windows;
 
 namespace GreenThumb.Windows
 {
@@ -14,32 +16,109 @@ namespace GreenThumb.Windows
             CancelToSignInWindow();
         }
 
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        private async void btnRegister_Click(object sender, RoutedEventArgs e) // Method for registering a new user
         {
-            // 1. Gather information from the input-fields
-            // 2. Check if the fields are correctly filled in
-            // IF NOT CORRECT... send a warning to the user
             // 3. Check if username and Email is available
-            // IF NOT AVAILABLE... send a warning to the user
-            // 4. Save the information in the database and create new user
-            // 5. Send information to user that the account was successfully created and return to SignInWindow
 
+            // Declaring the variables
+            UserModel newUser = new();
+            newUser.Username = txtNewUsername.Text.Trim();
+            newUser.FirstName = txtNewFirstName.Text.Trim();
+            newUser.LastName = txtNewLastName.Text.Trim();
+            newUser.Email = txtNewEmail.Text.Trim();
+            newUser.Password = txtNewPassword.Password.Trim();
 
-            string username;
-            string firstName;
-            string lastName;
-            string email;
-            string newPassword;
-            string confirmPassword;
+            // Handeling exceptions: catches the error if its null, empty or doesnt contain "@"
+            try
+            {
+                ValidateInputsAsync();
 
+                if (await IsUsernameInUseAsync(txtNewUsername.Text, txtNewEmail.Text))
+                {
+                    MessageBox.Show("Username or email is already in use. Please choose a different username or email.");
+                    return;
+                }
 
-            // TRYING BUTTONS
+                // TODO: Remove Asynchronic programming
+                await Task.Run(() =>
+                {
+                    using (GreenThumbDbContext context = new())
+                    {
+                        GreenThumbRepository<UserModel> greenThumbRepository = new(context);
+                        // Delaya för att se om async fungerar
+                        greenThumbRepository.Add(newUser);
+                        greenThumbRepository.Complete();
 
-            MessageBox.Show("Account created!", "Account created");
+                    }
+                });
 
-            SignInWindow signInWindow = new();
-            signInWindow.Show();
-            Close();
+                MessageBox.Show("Account successfully created! Welcome to a greener life!", "Account created");
+
+                SignInWindow signInWindow = new();
+                signInWindow.Show();
+                Close();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Handle other exceptions that might occur
+                MessageBox.Show($"Unexpected error: {ex.Message}");
+            }
+        }
+        private void ValidateInputsAsync()
+        {
+            ValidateNotEmptyAsync(txtNewUsername.Text, "Username");
+            ValidateNotEmptyAsync(txtNewFirstName.Text, "First name");
+            ValidateNotEmptyAsync(txtNewLastName.Text, "Last name");
+            ValidateNotEmptyAsync(txtNewEmail.Text, "Email");
+            ValidateEmailFormatAsync(txtNewEmail.Text);
+            ValidatePasswordAsync(txtNewPassword.Password, txtConfirmPassword.Password);
+        }
+        private void ValidateNotEmptyAsync(string input, string fieldName)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                throw new ArgumentException($"{fieldName} cannot be empty.");
+            }
+        }
+        private void ValidateEmailFormatAsync(string email)
+        {
+            if (!email.Contains("@"))
+            {
+                throw new ArgumentException("Invalid input for email. The email must contain the \"@\" symbol.");
+            }
+        }
+        private void ValidatePasswordAsync(string newPassword, string confirmPassword)
+        {
+            if (string.IsNullOrEmpty(newPassword) && string.IsNullOrEmpty(confirmPassword))
+            {
+                throw new ArgumentException("Please enter a new password.");
+            }
+            else if (newPassword != confirmPassword)
+            {
+                throw new ArgumentException("The password doesn't match. Please try again.");
+            }
+        }
+        private async Task<bool> IsUsernameInUseAsync(string usernameCheck, string emailCheck)
+        {
+            using (GreenThumbDbContext context = new())
+            {
+                UserRepository userRepository = new(context);
+
+                if (await userRepository.GetByUsername(usernameCheck) == null)
+                {
+                    return false;
+                }
+                else if (await userRepository.GetByEmail(emailCheck) == null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         private void CancelToSignInWindow() // Method for returning to SignInWindow
@@ -51,7 +130,8 @@ namespace GreenThumb.Windows
                 || txtConfirmPassword.Password != ""
                 || txtNewEmail.Text != "")
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel?\n\nYour progress will not be saved!",
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel?" +
+                    "\n\nYour progress will not be saved!",
                     "Warning", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {

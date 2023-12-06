@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GreenThumb.Migrations
 {
     [DbContext(typeof(GreenThumbDbContext))]
-    [Migration("20231204230012_SeedData")]
-    partial class SeedData
+    [Migration("20231206130109_InitialAndSeedingData")]
+    partial class InitialAndSeedingData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace GreenThumb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("GardenModelPlantModel", b =>
-                {
-                    b.Property<int>("GardensGardenId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlantsPlantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GardensGardenId", "PlantsPlantId");
-
-                    b.HasIndex("PlantsPlantId");
-
-                    b.ToTable("GardenModelPlantModel");
-                });
 
             modelBuilder.Entity("GreenThumb.Models.GardenModel", b =>
                 {
@@ -52,10 +37,6 @@ namespace GreenThumb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("start_date");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -99,6 +80,35 @@ namespace GreenThumb.Migrations
                     b.ToTable("Instructions");
                 });
 
+            modelBuilder.Entity("GreenThumb.Models.PlantGardens", b =>
+                {
+                    b.Property<int>("PlantId")
+                        .HasColumnType("int")
+                        .HasColumnName("plant_id");
+
+                    b.Property<int>("GardenId")
+                        .HasColumnType("int")
+                        .HasColumnName("garden_id");
+
+                    b.Property<DateTime>("DateAtGarden")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("date_at_garden");
+
+                    b.Property<int?>("GardensGardenId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlantsPlantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlantId", "GardenId");
+
+                    b.HasIndex("GardensGardenId");
+
+                    b.HasIndex("PlantsPlantId");
+
+                    b.ToTable("PlantGardens");
+                });
+
             modelBuilder.Entity("GreenThumb.Models.PlantModel", b =>
                 {
                     b.Property<int>("PlantId")
@@ -118,6 +128,11 @@ namespace GreenThumb.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("type");
+
                     b.HasKey("PlantId");
 
                     b.ToTable("Plants");
@@ -127,49 +142,57 @@ namespace GreenThumb.Migrations
                         {
                             PlantId = 1,
                             Description = "Roses are classic flowering plants known for their fragrant and colorful blooms. They come in various colors and varieties, each with its own unique scent and aesthetic appeal. Roses are often used in gardens, bouquets, and as ornamental plants.",
-                            Name = "Rose"
+                            Name = "Rose",
+                            Type = "Shrub"
                         },
                         new
                         {
                             PlantId = 2,
                             Description = "Monstera deliciosa, also known as the Swiss cheese plant, is a popular tropical houseplant with large, glossy leaves that have distinctive splits and holes. It adds a touch of exotic beauty to indoor spaces and is relatively easy to care for.",
-                            Name = "Monstera Deliciosa"
+                            Name = "Monstera Deliciosa",
+                            Type = "Houseplant"
                         },
                         new
                         {
                             PlantId = 3,
                             Description = "Lavender is a fragrant herb known for its aromatic flowers and silvery-green foliage. It is often cultivated for its essential oils, used in perfumes and aromatherapy. Lavender is also a favorite in gardens, attracting pollinators and adding a soothing scent to the surroundings.",
-                            Name = "Lavender"
+                            Name = "Lavender",
+                            Type = "Shrub"
                         },
                         new
                         {
                             PlantId = 4,
                             Description = "The snake plant, also known as mother-in-law's tongue, is a hardy and low-maintenance indoor plant. It has tall, upright leaves that are often green with variegated patterns. Snake plants are known for their air-purifying qualities and can thrive in low-light conditions.",
-                            Name = "Snake Plant"
+                            Name = "Snake Plant",
+                            Type = "Succulent"
                         },
                         new
                         {
                             PlantId = 5,
                             Description = "Sunflowers are iconic annual plants with large, vibrant yellow flowers that resemble the sun. They are known for their heliotropic nature, with the flowers turning to face the sun. Sunflowers are commonly grown for their seeds, which are edible and often used in snacks and cooking.",
-                            Name = "Sunflower"
+                            Name = "Sunflower",
+                            Type = "Annual"
                         },
                         new
                         {
                             PlantId = 6,
                             Description = "Bamboo is a versatile and fast-growing plant belonging to the grass family. It is known for its tall, slender stems (culms) and is used for various purposes, including construction, furniture, and as a decorative plant. Some bamboo species are also a source of food.",
-                            Name = "Bamboo"
+                            Name = "Bamboo",
+                            Type = "Grass"
                         },
                         new
                         {
                             PlantId = 7,
                             Description = "Tulips are spring-blooming flowers with a wide range of colors and shapes. They are bulbous plants and are often associated with the arrival of spring. Tulips are popular in gardens and floral arrangements, symbolizing love and elegance.",
-                            Name = "Tulip"
+                            Name = "Tulip",
+                            Type = "Bulb"
                         },
                         new
                         {
                             PlantId = 8,
                             Description = "Cannabis is a genus of flowering plants, including sativa, indica, and ruderalis species. Known for psychoactive properties due to THC, it has distinctive palmate leaves and resinous flowers. Used historically for medicinal, recreational, and industrial purposes, cannabis contains cannabinoids like CBD. Legal status varies globally.",
-                            Name = "Cannabis"
+                            Name = "Cannabis",
+                            Type = "Herb"
                         });
                 });
 
@@ -212,21 +235,6 @@ namespace GreenThumb.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("GardenModelPlantModel", b =>
-                {
-                    b.HasOne("GreenThumb.Models.GardenModel", null)
-                        .WithMany()
-                        .HasForeignKey("GardensGardenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GreenThumb.Models.PlantModel", null)
-                        .WithMany()
-                        .HasForeignKey("PlantsPlantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("GreenThumb.Models.GardenModel", b =>
                 {
                     b.HasOne("GreenThumb.Models.UserModel", "User")
@@ -249,9 +257,31 @@ namespace GreenThumb.Migrations
                     b.Navigation("Plant");
                 });
 
+            modelBuilder.Entity("GreenThumb.Models.PlantGardens", b =>
+                {
+                    b.HasOne("GreenThumb.Models.GardenModel", "Gardens")
+                        .WithMany("PlantGardens")
+                        .HasForeignKey("GardensGardenId");
+
+                    b.HasOne("GreenThumb.Models.PlantModel", "Plants")
+                        .WithMany("PlantGardens")
+                        .HasForeignKey("PlantsPlantId");
+
+                    b.Navigation("Gardens");
+
+                    b.Navigation("Plants");
+                });
+
+            modelBuilder.Entity("GreenThumb.Models.GardenModel", b =>
+                {
+                    b.Navigation("PlantGardens");
+                });
+
             modelBuilder.Entity("GreenThumb.Models.PlantModel", b =>
                 {
                     b.Navigation("Instructions");
+
+                    b.Navigation("PlantGardens");
                 });
 
             modelBuilder.Entity("GreenThumb.Models.UserModel", b =>
