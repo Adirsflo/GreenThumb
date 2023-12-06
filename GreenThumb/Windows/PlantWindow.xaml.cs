@@ -88,14 +88,13 @@ namespace GreenThumb.Windows
 
         private void blkInformation_Click(object sender, RoutedEventArgs e) // TODO: Fix this function
         {
+            // FIX THIS FUNCTION
             MessageBox.Show("Information about how to use the application will be displayed here!", "Information");
         }
 
         private void btnDetails_Click(object sender, RoutedEventArgs e)
         {
-            // 1. Välj markerad planta från lstAllPlants
-            // OM INGET ÄR VALT... Visa varningsmeddelande
-            // 2. Skicka plantans ID till nästa skärm
+            // 2. Skicka plantans ID till nästa skärm (??)
 
             ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
 

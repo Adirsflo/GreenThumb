@@ -39,19 +39,19 @@
         <Label Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Content="Plant Description" Margin="-20 -15 20 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="3" Grid.Row="6" Content="Title" Margin="-20 0 20 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="3" Grid.Row="7" Content="Instructions" Margin="-20 5 0 0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
-        <Label Grid.Column="4" Grid.Row="3" Content="Add to Garden?" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="4" Grid.Row="3" Content="Added to Garden?" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="5" Content="Care Advice" Margin="0 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="18" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
 
         <StackPanel Name="rbIsAddedToGarden" Orientation="Horizontal" Margin="5" Grid.Column="4" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Top">
             <RadioButton Name="rbAddedToGardenTrue" Checked="rbAddedToGardenTrue_Checked">Yes</RadioButton>
             <RadioButton Name="rbAddedToGardenFalse" Checked="rbAddedToGardenFalse_Checked">No</RadioButton>
         </StackPanel>
-        
-        <TextBox Name="txtPlantDescription" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Margin="-20 20 25 -40" VerticalContentAlignment="Center" TextWrapping="Wrap" IsEnabled="False"/>
-        <TextBox Name="txtInstructionName" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Height="30" Margin="-20 -20 25 0" VerticalContentAlignment="Center" IsEnabled="False"/>
-        <TextBox Name="txtInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="-20 -15 25 8" VerticalContentAlignment="Center" IsEnabled="False"/>
 
-        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 37 8" SelectionChanged="lstAddInstruction_SelectionChanged"/>
+        <TextBox Name="txtPlantDescription" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Margin="-20 20 25 -40" VerticalContentAlignment="Center" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox Name="txtInstructionName" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Height="30" Margin="-20 -20 25 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
+        <TextBox Name="txtInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="-20 -15 25 8" Background="White" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" />
+
+        <ListView Name="lstInstructions" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 37 8" SelectionChanged="lstInstruction_SelectionChanged"/>
 
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
         <Hyperlink Click="blkInformation_Click" FontStyle="Normal">

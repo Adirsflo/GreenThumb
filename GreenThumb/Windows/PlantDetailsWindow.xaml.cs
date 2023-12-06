@@ -1,11 +1,11 @@
-﻿using System.Windows;
+﻿using GreenThumb.Database;
+using GreenThumb.Managers;
+using GreenThumb.Models;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GreenThumb.Windows
 {
-    /// <summary>
-    /// Interaction logic for PlantDetailsWindow.xaml
-    /// </summary>
     public partial class PlantDetailsWindow : Window
     {
         public PlantDetailsWindow(ListBoxItem item)
@@ -19,13 +19,92 @@ namespace GreenThumb.Windows
         {
             if (item != null)
             {
-                // lblPlantName
-                // txtPlantDescription
-                // txtInstructionName
-                // txtInstructionDescription
-                // lstAddInstruction 
+                using (GreenThumbDbContext context = new())
+                {
+                    PlantModel plantItem = (PlantModel)item.Tag;
+
+                    lblPlantName.Content = plantItem.Name;
+                    txtPlantDescription.Text = plantItem.Description;
+
+                    var instructions = context.Instructions
+                        .Where(i => i.PlantId == plantItem.PlantId).ToList();
+
+                    foreach (var instruction in instructions)
+                    {
+                        ListViewItem instructionItem = new();
+
+                        instructionItem.Content = instruction.Name;
+                        instructionItem.Tag = instruction;
+                        lstInstructions.Items.Add(instructionItem);
+                    }
+
+
+                    UserModel userId = UserManager.UserSignedIn;
+
+                    if (userId != null)
+                    {
+                        var userGardens = context.Gardens.FirstOrDefault(g => g.UserId == userId.UserId);
+                        if (userGardens != null)
+                        {
+                            var plantGardenRelation = context.PlantGardens
+                                .Where(pg => pg.GardenId == userGardens.GardenId).ToList();
+
+                            foreach (var plantGarden in plantGardenRelation)
+                            {
+                                int currentPlantId = plantItem.PlantId;
+
+                                rbAddedToGardenTrue.IsChecked = plantGarden.PlantId == currentPlantId;
+                            }
+
+                            rbAddedToGardenFalse.IsChecked = !rbAddedToGardenTrue.IsChecked;
+                        }
+                    }
+
+
+
+
+
+
+                    /*
+                    foreach (var instruction in context.Instructions.Where(i => i.PlantId == plantItem.PlantId)) // TODO: Forma om koden
+                    {
+                        ListViewItem instructionItem = new();
+
+                        instructionItem.Content = instruction.Name;
+                        instructionItem.Tag = instruction;
+                        lstInstructions.Items.Add(instructionItem);
+                    }
+
+                    int gardenId = 0;
+
+                    foreach (var garden in context.Gardens.Where(g => g.UserId == UserManager.UserSignedIn.UserId))
+                    {
+                        gardenId = garden.GardenId;
+                    }
+
+                    foreach(var plantGarden in context.PlantGardens.Where(pg => pg.GardenId == gardenId))
+                    {
+                        
+                    }*/
+
+
+
+                }
                 // CLEAR lstAdInstructions
                 // rbIsAddedToGarden (rbAddedToGardenTrue // rbAddedToGardenFalse)
+                // Här vill du att den läser av ifall användarens GardenId har en PlantId
+                // Om den har det ska "Yes" vara ifylt, osv
+
+                /*
+                 * Du vill foreacha varje garden
+                 * i foreachen vill du se ifall UserId stämmer överens med det nuvarande inloggade UserId
+                 * Spara GardenId
+                 * 
+                 * Du vill sen se ifall PlantGardens GardenId har PlantId:et som details visar
+                 * Ifall det finns en PlantId i GardenId, "Yes" ska vara ifyllt
+                 * Annars "No"
+                 */
+
             }
         }
 
@@ -41,19 +120,27 @@ namespace GreenThumb.Windows
             Close();
         }
 
-        private void lstAddInstruction_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void lstInstruction_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            MessageBox.Show("Instruction added!", "Instruction added");
+            ListBoxItem selectedItem = (ListBoxItem)lstInstructions.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                InstructionModel selectedInstruction = (InstructionModel)selectedItem.Tag;
+
+                txtInstructionName.Text = selectedInstruction.Name;
+                txtInstructionDescription.Text = selectedInstruction.Description;
+            }
         }
 
         private void rbAddedToGardenTrue_Checked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Added to garden");
+
         }
 
         private void rbAddedToGardenFalse_Checked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Removed from garden");
+
         }
     }
 }

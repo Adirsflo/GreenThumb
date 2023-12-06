@@ -104,6 +104,122 @@ namespace GreenThumb.Database
                     Description = "Cannabis is a genus of flowering plants, including sativa, indica, and ruderalis species. Known for psychoactive properties due to THC, it has distinctive palmate leaves and resinous flowers. Used historically for medicinal, recreational, and industrial purposes, cannabis contains cannabinoids like CBD. Legal status varies globally."
                 }
                 );
+
+            modelBuilder.Entity<InstructionModel>()
+                .HasData(
+                new InstructionModel()
+                {
+                    InstructionId = 1,
+                    Name = "Watering",
+                    Description = "Water the rose plant 2 times a day, and pour 200 ml of water each time.",
+                    PlantId = 1,
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 2,
+                    Name = "Pruning",
+                    Description = "Trim any dead or wilted flowers and leaves from the rose plant using clean pruning shears. Aim to promote healthy growth and maintain a tidy appearance.",
+                    PlantId = 1
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 3,
+                    Name = "Sunlight Exposure",
+                    Description = "Place the Monstera Deliciosa in a location with bright, indirect sunlight. Avoid direct sunlight, as it can scorch the leaves.",
+                    PlantId = 2
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 4,
+                    Name = "Soil Moisture",
+                    Description = "Allow the top inch of the soil to dry out between waterings. Water the Monstera when the soil feels slightly dry, and ensure proper drainage to prevent waterlogged roots.",
+                    PlantId = 2
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 5,
+                    Name = "Pruning",
+                    Description = "After the first bloom, prune back one-third of the lavender plant to encourage bushier growth and more flowers.",
+                    PlantId = 3
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 6,
+                    Name = "Well-Drained Soil",
+                    Description = "Plant lavender in well-drained soil to prevent root rot. Add sand or perlite to improve drainage if needed.",
+                    PlantId = 3
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 7,
+                    Name = "Low Light Tolerance",
+                    Description = "Snake plants thrive in low light but can tolerate indirect sunlight. Keep the plant in a spot with minimal light exposure.",
+                    PlantId = 4
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 8,
+                    Name = "Infrequent Watering",
+                    Description = "Water the snake plant sparingly, allowing the soil to dry out completely between waterings. Overwatering can lead to root rot.",
+                    PlantId = 4
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 9,
+                    Name = "Sun Exposure",
+                    Description = "Plant sunflowers in a location with full sun exposure for at least 6-8 hours a day for optimal growth and vibrant blooms.",
+                    PlantId = 5
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 10,
+                    Name = "Support for Tall Stems",
+                    Description = "As sunflowers grow, provide support for tall stems by staking them to prevent bending or breaking in windy conditions.",
+                    PlantId = 5
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 11,
+                    Name = "Containment",
+                    Description = "If growing bamboo outdoors, consider containing its spread by planting it within barriers or using a root control system to prevent it from becoming invasive.",
+                    PlantId = 6
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 12,
+                    Name = "Fertilization",
+                    Description = "Fertilize bamboo with a balanced fertilizer during the growing season to promote healthy growth. Follow the recommended dosage on the fertilizer package.",
+                    PlantId = 6
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 13,
+                    Name = "Deadheading",
+                    Description = "Remove faded or spent tulip flowers by deadheading them. This encourages the plant to redirect energy into bulb growth.",
+                    PlantId = 7
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 14,
+                    Name = "Bulb Division",
+                    Description = "Every few years, consider dividing tulip bulbs to prevent overcrowding. Lift the bulbs, separate them, and replant in well-prepared soil.",
+                    PlantId = 7
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 15,
+                    Name = "Pruning for Airflow",
+                    Description = "Prune lower branches of cannabis plants to improve airflow and reduce the risk of mold and pests.",
+                    PlantId = 8
+                },
+                new InstructionModel()
+                {
+                    InstructionId = 16,
+                    Name = "Light Schedule",
+                    Description = "If cultivating cannabis indoors, maintain a consistent light schedule during the vegetative and flowering stages, providing 18 hours of light during vegetative growth and 12 hours during flowering.",
+                    PlantId = 8
+                }
+                );
         }
     }
 }

@@ -39,18 +39,29 @@ namespace GreenThumb.Windows
                     return;
                 }
 
-                // TODO: Remove Asynchronic programming
-                await Task.Run(() =>
+                using (GreenThumbDbContext context = new())
                 {
-                    using (GreenThumbDbContext context = new())
-                    {
-                        GreenThumbRepository<UserModel> greenThumbRepository = new(context);
-                        // Delaya för att se om async fungerar
-                        greenThumbRepository.Add(newUser);
-                        greenThumbRepository.Complete();
+                    GreenThumbRepository<UserModel> userRepository = new(context);
 
-                    }
-                });
+                    userRepository.Add(newUser);
+                    userRepository.Complete();
+                    // Kalla på repository (AKA new:a upp i denna rutan)
+                    // Lägga till i databasen
+                    // Spara ändringar
+                }
+
+                //// TODO: Remove Asynchronic programming
+                //await Task.Run(() =>
+                //{
+                //    using (GreenThumbDbContext context = new())
+                //    {
+                //        GreenThumbRepository<UserModel> greenThumbRepository = new(context);
+                //        // Delaya för att se om async fungerar
+                //        greenThumbRepository.Add(newUser);
+                //        greenThumbRepository.Complete();
+
+                //    }
+                //});
 
                 MessageBox.Show("Account successfully created! Welcome to a greener life!", "Account created");
 
