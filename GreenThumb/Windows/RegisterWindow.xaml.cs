@@ -21,10 +21,10 @@ namespace GreenThumb.Windows
 		{
 			// Declaring the variables
 			UserModel newUser = new();
-			newUser.Username = CapitalizeFirstLetter(txtNewUsername.Text.Trim());
-			newUser.FirstName = CapitalizeFirstLetter(txtNewFirstName.Text.Trim());
-			newUser.LastName = CapitalizeFirstLetter(txtNewLastName.Text.Trim());
-			newUser.Email = txtNewEmail.Text.Trim();
+			newUser.Username = CapitalizeFirstLetter(txtNewUsername.Text.Trim().ToLower());
+			newUser.FirstName = CapitalizeFirstLetter(txtNewFirstName.Text.Trim().ToLower());
+			newUser.LastName = CapitalizeFirstLetter(txtNewLastName.Text.Trim().ToLower());
+			newUser.Email = txtNewEmail.Text.Trim().ToLower();
 			newUser.Password = txtNewPassword.Password.Trim();
 
 			// Handeling exceptions: catches the error if its null, empty or doesnt contain "@"
