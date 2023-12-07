@@ -47,7 +47,7 @@
             <RadioButton Name="rbAddedToGardenFalse" Checked="rbAddedToGardenFalse_Checked">No</RadioButton>
         </StackPanel>
 
-        <TextBox Name="txtPlantDescription" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Margin="-20 20 25 -40" VerticalContentAlignment="Center" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox Name="txtPlantDescription" Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" Margin="-20 20 25 -40" HorizontalContentAlignment="Left" TextWrapping="Wrap" IsReadOnly="True"/>
         <TextBox Name="txtInstructionName" Grid.Column="3" Grid.Row="6" Grid.RowSpan="2" Height="30" Margin="-20 -20 25 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
         <TextBox Name="txtInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="-20 -15 25 8" Background="White" TextWrapping="Wrap" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" />
 
