@@ -43,12 +43,12 @@
         <Label Grid.Column="2" Grid.Row="7" Content="Title" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="2" Grid.Row="8" Content="Instructions" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
 
-        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 10 8"/>
-
         <TextBox Name="txtNewPlantName" Grid.Column="3" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
         <TextBox Name="txtNewPlantDescription" Grid.Column="3" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
         <TextBox Name="txtNewInstructionName" Grid.Column="3" Grid.Row="7" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
         <TextBox Name="txtNewInstructionDescription" Grid.Column="3" Grid.Row="8" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
+
+        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="6" Grid.RowSpan="4" Margin="2 20 10 8"/>
 
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
             <Hyperlink Click="blkInformation_Click" FontStyle="Normal">

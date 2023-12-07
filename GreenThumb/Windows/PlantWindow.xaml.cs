@@ -6,142 +6,159 @@ using System.Windows.Controls;
 
 namespace GreenThumb.Windows
 {
-    public partial class PlantWindow : Window
-    {
-        public PlantWindow()
-        {
-            InitializeComponent();
+	public partial class PlantWindow : Window
+	{
+		public PlantWindow()
+		{
+			InitializeComponent();
 
-            UpdateUi();
-        }
-        public void UpdateUi() // Updates the windows when starting up
-        {
-            using (GreenThumbDbContext context = new())
-            {
-                GreenThumbRepository<UserModel> userRepository = new(context);
+			UpdateUi();
+		}
+		public void UpdateUi() // Updates the windows when starting up
+		{
+			lstAllPlants.Items.Clear();
 
-                foreach (var user in userRepository.GetAll())
-                {
-                    if (user.Username == UserManager.UserSignedIn.Username.ToString())
-                    {
-                        lblWelcomeUsername.Content = "Welcome " + user.Username.ToString(); // Insert Username
-                        lblFullName.Content = user.FirstName + " " + user.LastName.ToString();
-                    }
-                }
-            }
+			using (GreenThumbDbContext context = new())
+			{
+				GreenThumbRepository<UserModel> userRepository = new(context);
 
-            // Fill in all plants in the lstMyTravels
+				foreach (var user in userRepository.GetAll())
+				{
+					if (user.Username == UserManager.UserSignedIn.Username.ToString())
+					{
+						lblWelcomeUsername.Content = "Welcome " + user.Username.ToString(); // Insert Username
+						lblFullName.Content = user.FirstName + " " + user.LastName.ToString();
+					}
+				}
+			}
 
-            using (GreenThumbDbContext context = new())
-            {
-                GreenThumbRepository<PlantModel> plantRepository = new(context);
+			// Fill in all plants in the lstMyTravels
 
-                foreach (var plant in plantRepository.GetAll())
-                {
-                    ListViewItem item = new();
+			using (GreenThumbDbContext context = new())
+			{
+				GreenThumbRepository<PlantModel> plantRepository = new(context);
 
-                    item.Content = new
-                    {
-                        Name = plant.Name,
-                        Type = plant.Type,
-                    };
-                    item.Tag = plant;
+				foreach (var plant in plantRepository.GetAll())
+				{
+					ListViewItem item = new();
 
-                    lstAllPlants.Items.Add(item);
-                }
-            }
-        }
+					item.Content = new
+					{
+						Name = plant.Name,
+						Type = plant.Type,
+					};
+					item.Tag = plant;
 
-        private void txtSearchPlant_TextChanged(object sender, TextChangedEventArgs e) // Searches for plants by input
-        {
-            string searchPlantByInput = txtSearchPlant.Text.ToLower();
+					lstAllPlants.Items.Add(item);
+				}
+			}
+		}
 
-            using (GreenThumbDbContext context = new())
-            {
-                GreenThumbRepository<PlantModel> plantRepository = new(context);
+		private void txtSearchPlant_TextChanged(object sender, TextChangedEventArgs e) // Searches for plants by input
+		{
+			string searchPlantByInput = txtSearchPlant.Text.ToLower();
 
-                var allPlants = plantRepository.GetAll();
+			using (GreenThumbDbContext context = new())
+			{
+				GreenThumbRepository<PlantModel> plantRepository = new(context);
 
-                lstAllPlants.Items.Clear();
-                var filteredPlants = allPlants.Where(p => p.Name.ToLower().Contains(searchPlantByInput));
-                foreach (var plant in filteredPlants)
-                {
-                    ListViewItem item = new();
-                    item.Content = new
-                    {
-                        Name = plant.Name,
-                        Type = plant.Type,
-                    };
-                    item.Tag = plant;
+				var allPlants = plantRepository.GetAll();
 
-                    lstAllPlants.Items.Add(item);
-                }
-            }
-        }
+				lstAllPlants.Items.Clear();
+				var filteredPlants = allPlants.Where(p => p.Name.ToLower().Contains(searchPlantByInput));
+				foreach (var plant in filteredPlants)
+				{
+					ListViewItem item = new();
+					item.Content = new
+					{
+						Name = plant.Name,
+						Type = plant.Type,
+					};
+					item.Tag = plant;
 
-        private void blkMyGarden_Click(object sender, RoutedEventArgs e) // Accesing the user Garden
-        {
-            MyGardenWindow myGardenWindow = new();
-            myGardenWindow.Show();
-            Close();
-        }
+					lstAllPlants.Items.Add(item);
+				}
+			}
+		}
 
-        private void blkInformation_Click(object sender, RoutedEventArgs e) // TODO: Fix this function
-        {
-            // FIX THIS FUNCTION
-            MessageBox.Show("Information about how to use the application will be displayed here!", "Information");
-        }
+		private void blkMyGarden_Click(object sender, RoutedEventArgs e) // Accesing the user Garden
+		{
+			MyGardenWindow myGardenWindow = new();
+			myGardenWindow.Show();
+			Close();
+		}
 
-        private void btnDetails_Click(object sender, RoutedEventArgs e)
-        {
-            // 2. Skicka plantans ID till nästa skärm (??)
+		private void blkInformation_Click(object sender, RoutedEventArgs e) // TODO: Fix this function
+		{
+			// FIX THIS FUNCTION
+			MessageBox.Show("Information about how to use the application will be displayed here!", "Information");
+		}
 
-            ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
+		private void btnDetails_Click(object sender, RoutedEventArgs e) // Shows details of the selected plant in a new window
+		{
+			ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
 
-            if (selectedItem != null)
-            {
-                PlantDetailsWindow detailsWindow = new(selectedItem);
-                detailsWindow.Show();
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("Please select a plant to view.", "Warning");
-            }
-        }
+			if (selectedItem != null)
+			{
+				PlantDetailsWindow detailsWindow = new(selectedItem);
+				detailsWindow.Show();
+				Close();
+			}
+			else
+			{
+				MessageBox.Show("Please select a plant to view.", "Warning");
+			}
+		}
 
-        private void btnAddPlant_Click(object sender, RoutedEventArgs e)
-        {
-            AddPlantWindow addWindow = new();
-            addWindow.Show();
-            Close();
-        }
+		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Opens a new window for adding plant to database
+		{
+			AddPlantWindow addWindow = new();
+			addWindow.Show();
+			Close();
+		}
 
-        private void btnRemove_Click(object sender, RoutedEventArgs e)
-        {
-            // 1. Välj markerad planta från lstAllPlants
-            // OM INGET ÄR VALT... Visa varningsmeddelande
-            // 2. Ta bort plantan från databasen
-            // 3. Visa ett meddelande att plantan nu är borttagen
+		private void btnRemove_Click(object sender, RoutedEventArgs e) // Removes plant from database
+		{
+			ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
 
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this plant?", "Removing plant", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                MessageBox.Show("Plant removed!", "Removing plant");
-            }
-        }
+			if (selectedItem != null)
+			{
+				MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this plant?", "Removing plant", MessageBoxButton.YesNo);
+				if (result == MessageBoxResult.Yes)
+				{
+					using (GreenThumbDbContext context = new())
+					{
+						GreenThumbRepository<PlantModel> plantRepository = new(context);
+						int selectedPlantId = ((PlantModel)selectedItem.Tag).PlantId;
 
-        private void btnSignOut_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "Signing out", MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
-            {
-                MessageBox.Show("Thank you for thinking green!", "Signing out");
-                SignInWindow signInWindow = new();
-                signInWindow.Show();
-                Close();
-            }
-        }
+						plantRepository.Delete(selectedPlantId);
+						plantRepository.Complete();
+					}
 
-    }
+					UpdateUi();
+
+					MessageBox.Show("Plant removed!", "Removing plant");
+				}
+			}
+			else
+			{
+				MessageBox.Show("Please select a plant to remove.", "Warning");
+			}
+		}
+
+		private void btnSignOut_Click(object sender, RoutedEventArgs e) // Signing out user
+		{
+			MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "Signing out", MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes)
+			{
+				UserManager.UserSignedIn = null;
+
+				MessageBox.Show("Thank you for thinking green!", "Signing out");
+				SignInWindow signInWindow = new();
+				signInWindow.Show();
+				Close();
+			}
+		}
+
+	}
 }
