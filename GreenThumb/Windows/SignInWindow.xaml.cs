@@ -3,33 +3,33 @@ using System.Windows;
 
 namespace GreenThumb.Windows
 {
-    public partial class SignInWindow : Window
-    {
-        public SignInWindow()
-        {
-            InitializeComponent();
-        }
+	public partial class SignInWindow : Window
+	{
+		public SignInWindow()
+		{
+			InitializeComponent();
+		}
 
-        private void blkRegister_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterWindow registerWindow = new();
-            registerWindow.Show();
-            Close();
-        }
+		private void blkRegister_Click(object sender, RoutedEventArgs e) // Opens new window for user register
+		{
+			RegisterWindow registerWindow = new();
+			registerWindow.Show();
+			Close();
+		}
 
-        private void btnSignIn_Click(object sender, RoutedEventArgs e) // Attempting to log in user
-        {
-            string username = txtUsername.Text;
-            string password = txtPassword.Password;
+		private void btnSignIn_Click(object sender, RoutedEventArgs e) // Attempting to log in user
+		{
+			string username = txtUsername.Text.ToLower();
+			string password = txtPassword.Password;
 
-            bool isSignedIn = UserManager.SignInUser(username, password);
+			bool isSignedIn = UserManager.SignInUser(username, password);
 
-            if (isSignedIn)
-            {
-                PlantWindow plantWindow = new();
-                plantWindow.Show();
-                Close();
-            }
-        }
-    }
+			if (isSignedIn)
+			{
+				PlantWindow plantWindow = new();
+				plantWindow.Show();
+				Close();
+			}
+		}
+	}
 }

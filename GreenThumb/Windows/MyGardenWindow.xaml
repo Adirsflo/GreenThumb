@@ -37,24 +37,32 @@
         <Image Grid.Column="5" Grid.Row="1" HorizontalAlignment="Left" Height="30" Width="30" Margin="-5 0 0 0" Source="/Image/GreenThumbIMG.png" Stretch="UniformToFill"/>
 
         <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" Content="My Garden" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="25" FontFamily="Arial" FontWeight="Heavy" Foreground="#B9E458"/>
+        <Label Grid.Column="1" Grid.Row="3" Content="Search in Garden" HorizontalAlignment="Left" Margin="0 13 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="3" Content="Plant Name" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="4" Content="Plant Description" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
-        <Label Grid.Column="4" Grid.Row="5" Content="Start Date" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="4" Grid.Row="5" Content="Added to Garden" HorizontalAlignment="Left" Margin="5 -4 0 0" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="5" Grid.Row="6" Content="Instructions" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="6" Content="Title" HorizontalAlignment="Left" Margin="5 0 0 -12" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="7" Content="Instructions" HorizontalAlignment="Left" Margin="5 0 0 -12" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
 
-        <DatePickerTextBox Grid.Column="4" Grid.Row="6" Margin="10 0 5 10" Text="2020-10-02" IsEnabled="False"/>
+        <ListView Name="lstMyPlants" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="6" Margin="5 30 5 10" SelectionChanged="lstMyPlants_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="160" Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Width="160" Header="Type" DisplayMemberBinding="{Binding Type}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="lstInstructions" Grid.Column="5" Grid.Row="7" Grid.RowSpan="3" Margin="5 0 10 10" SelectionChanged="lstInstructions_SelectionChanged"/>
 
-        <ListView Name="lstMyPlants" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="6" Margin="5 0 5 10"/>
-        <ListView Name="lstInstructions" Grid.Column="5" Grid.Row="7" Grid.RowSpan="3" Margin="5 0 10 10"/>
+        <TextBox Name="txtSearchInGarden" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Height="30" Margin="5 30 5 -30" VerticalContentAlignment="Center" TextChanged="txtSearchInGarden_TextChanged"/>
+        <TextBox Name="txtPlantName" Grid.Column="5" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
+        <TextBox Name="txtPlantDescription" Grid.Column="5" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox Name="txtInstructionTitle" Grid.Column="4" Grid.Row="7" Height="30" Margin="10 0 5 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
+        <TextBox Name="txtInstructionDescription" Grid.Column="4" Grid.Row="8" Grid.RowSpan="2" Margin="10 8 5 10" VerticalContentAlignment="Top" TextWrapping="Wrap" IsReadOnly="True"/>
 
-        <TextBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Height="30" Margin="5 0 80 0" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Column="5" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Column="5" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
-        <TextBox Grid.Column="4" Grid.Row="7" Height="30" Margin="10 0 5 0" VerticalContentAlignment="Center"/>
-        <TextBox Grid.Column="4" Grid.Row="8" Grid.RowSpan="2" Margin="10 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
-
+        <DatePickerTextBox Name="dpAddedToGarden" Grid.Column="4" Grid.Row="5" VerticalAlignment="Bottom" Margin="10 0 5 8" Text="*INSERT DATE*" IsEnabled="False" BorderBrush="Gray" BorderThickness="1" IsReadOnly="True"/>
+        
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
         <Hyperlink Click="blkInformation_Click" FontStyle="Normal">
             <Hyperlink.Style>
@@ -68,6 +76,6 @@
         </TextBlock>
 
         <Button Name="btnBack" Grid.Column="5" Grid.Row="1" Height="25" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Back" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnBack_Click"/>
-        <Button Name="btnSearch" Grid.Column="2" Grid.Row="3" Height="30" Width="60" Margin="10 0 5 0" HorizontalAlignment="Right" Content="Search" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnSearch_Click"/>
+        <Button Name="btnRemoveFromGarden" Grid.Column="5" Grid.Row="2" Height="30" Width="60" Margin="10 0 5 0" HorizontalAlignment="Right" Content="Remove" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733" Click="btnRemoveFromGarden_Click"/>
     </Grid>
 </Window>

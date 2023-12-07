@@ -5,12 +5,8 @@ using System.Windows.Controls;
 
 namespace GreenThumb.Windows
 {
-	/// <summary>
-	/// Interaction logic for AddPlantWindow.xaml
-	/// </summary>
 	public partial class AddPlantWindow : Window
 	{
-		// Skapar en lista
 		public AddPlantWindow()
 		{
 			InitializeComponent();
@@ -96,15 +92,6 @@ namespace GreenThumb.Windows
 		}
 		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Adding plant to database
 		{
-			/*
-			 * 1. Kolla så inget är null
-			 * OM NÅGOT ÄR DET... skicka felmeddelande
-			 * 2. Samla information från Plant och lstAddInstruction
-			 * 3. Lägg till PlantId i InstructionModel
-			 * 3. Lägg till informationen i databasen
-			 * 4. Skicka meddelande till användaren
-			 */
-
 			PlantModel newPlant = new();
 			newPlant.Name = txtNewPlantName.Text.Trim();
 			newPlant.Type = txtNewPlantType.Text.Trim();
@@ -120,7 +107,6 @@ namespace GreenThumb.Windows
 					return;
 				}
 
-
 				MessageBoxResult result = MessageBox.Show("Have you added all the instructions for this plant?", "Adding plant", MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes)
 				{
@@ -135,8 +121,6 @@ namespace GreenThumb.Windows
 						foreach (ListViewItem instruction in lstAddInstruction.Items)
 						{
 							InstructionModel selectedInstruction = (InstructionModel)instruction.Tag;
-
-							//var instructionToAdd = (InstructionModel)instruction;
 							selectedInstruction.PlantId = newPlant.PlantId;
 
 							instructionRepository.Add(selectedInstruction);
@@ -160,28 +144,28 @@ namespace GreenThumb.Windows
 				MessageBox.Show($"Unexpected error: {ex.Message}");
 			}
 		}
-		private void ValidateInputs()
+		private void ValidateInputs() // Validates inputs for the fields on the screen
 		{
 			ValidateNotEmptyPlant(txtNewPlantName.Text, "Plant name");
 			ValidateNotEmptyPlant(txtNewPlantType.Text, "Plant type");
 			ValidateNotEmptyPlant(txtNewPlantDescription.Text, "Plant description");
-			ValidateNotEmptyInstruction(); // Fixa
+			ValidateNotEmptyInstruction();
 		}
-		private void ValidateNotEmptyPlant(string input, string fieldName)
+		private void ValidateNotEmptyPlant(string input, string fieldName) // Validates if plant information is empty or not
 		{
 			if (string.IsNullOrEmpty(input))
 			{
 				throw new ArgumentException($"{fieldName} cannot be empty.");
 			}
 		}
-		private void ValidateNotEmptyInstruction()
+		private void ValidateNotEmptyInstruction() // Validates if there is instructions for the plant
 		{
 			if (lstAddInstruction.Items.Count == 0)
 			{
 				throw new ArgumentException("You must add atleast one instruction for the plant.");
 			}
 		}
-		private bool IsPlantAvailable(string plantCheck)
+		private bool IsPlantAvailable(string plantCheck) // Validates if the plant is available or not
 		{
 			using (GreenThumbDbContext context = new())
 			{

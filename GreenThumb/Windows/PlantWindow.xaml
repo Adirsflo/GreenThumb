@@ -44,8 +44,6 @@
                 <GridView>
                     <GridViewColumn Width="179" Header="Name" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Width="179" Header="Type" DisplayMemberBinding="{Binding Type}"/>
-                    <!--<GridViewColumn Width="150" Header="Description" DisplayMemberBinding="{Binding Description}"/>-->
-                    <!--<GridViewColumn Width="100" Header="TravelType" DisplayMemberBinding="{Binding TravelType}"/>-->
                 </GridView>
             </ListView.View>
         </ListView>

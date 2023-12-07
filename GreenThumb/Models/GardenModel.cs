@@ -3,16 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GreenThumb.Models
 {
-    public class GardenModel
-    {
-        [Key]
-        [Column("id")]
-        public int GardenId { get; set; }
-        [Column("description")]
-        public string Description { get; set; } = null!;
-        [Column("user_id")]
-        public int UserId { get; set; }
-        public UserModel User { get; set; } = null!;
-        public List<PlantGardens>? PlantGardens { get; set; }
-    }
+	public class GardenModel
+	{
+		[Key]
+		[Column("id")]
+		public int GardenId { get; set; }
+		[Column("user_id")]
+		public int UserId { get; set; }
+		public UserModel User { get; set; } = null!;
+		public List<PlantGardens>? PlantGardens { get; set; }
+	}
 }

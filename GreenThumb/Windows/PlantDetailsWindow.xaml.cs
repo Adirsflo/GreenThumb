@@ -8,11 +8,13 @@ namespace GreenThumb.Windows
 {
 	public partial class PlantDetailsWindow : Window
 	{
+		ListBoxItem _item;
 		public PlantDetailsWindow(ListBoxItem item)
 		{
 			InitializeComponent();
 
 			UpdateUi(item);
+			_item = item;
 		}
 
 		private void UpdateUi(ListBoxItem item) // Updates the user interface with plant information
@@ -27,7 +29,10 @@ namespace GreenThumb.Windows
 					txtPlantDescription.Text = plantItem.Description;
 
 					var instructions = context.Instructions
-							.Where(i => i.PlantId == plantItem.PlantId).ToList();
+							.Where(i => i.PlantId == plantItem.PlantId)
+							.ToList();
+
+					lstInstructions.Items.Clear();
 
 					foreach (var instruction in instructions)
 					{
@@ -38,75 +43,25 @@ namespace GreenThumb.Windows
 						lstInstructions.Items.Add(instructionItem);
 					}
 
+					UserModel user = UserManager.UserSignedIn;
 
-					UserModel userId = UserManager.UserSignedIn;
-
-					// TODO: Ifall man inte har plantor i sin garden så ska det automatisk stå ikryssat "No" i rbAddedToGarden
-
-					if (userId != null)
+					if (user != null)
 					{
-						var userGardens = context.Gardens.FirstOrDefault(g => g.UserId == userId.UserId);
+						var userGardens = context.Gardens
+							.FirstOrDefault(g => g.UserId == user.UserId);
+
 						if (userGardens != null)
 						{
-							var plantGardenRelation = context.PlantGardens
-									.Where(pg => pg.GardenId == userGardens.GardenId).ToList();
+							var plantGarden = context.PlantGardens
+									.FirstOrDefault(pg => pg.GardenId == userGardens.GardenId && pg.PlantId == plantItem.PlantId);
 
-							foreach (var plantGarden in plantGardenRelation)
-							{
-								int currentPlantId = plantItem.PlantId;
+							bool isInGarden = plantGarden != null;
 
-								rbAddedToGardenTrue.IsChecked = plantGarden.PlantId == currentPlantId;
-							}
-
-							rbAddedToGardenFalse.IsChecked = !rbAddedToGardenTrue.IsChecked;
+							rbAddedToGardenTrue.IsChecked = isInGarden;
+							rbAddedToGardenFalse.IsChecked = !isInGarden;
 						}
 					}
-
-
-
-
-
-
-					/*
-					foreach (var instruction in context.Instructions.Where(i => i.PlantId == plantItem.PlantId)) // TODO: Forma om koden
-					{
-							ListViewItem instructionItem = new();
-
-							instructionItem.Content = instruction.Name;
-							instructionItem.Tag = instruction;
-							lstInstructions.Items.Add(instructionItem);
-					}
-
-					int gardenId = 0;
-
-					foreach (var garden in context.Gardens.Where(g => g.UserId == UserManager.UserSignedIn.UserId))
-					{
-							gardenId = garden.GardenId;
-					}
-
-					foreach(var plantGarden in context.PlantGardens.Where(pg => pg.GardenId == gardenId))
-					{
-
-					}*/
-
-
-
 				}
-				// CLEAR lstAdInstructions
-				// rbIsAddedToGarden (rbAddedToGardenTrue // rbAddedToGardenFalse)
-				// Här vill du att den läser av ifall användarens GardenId har en PlantId
-				// Om den har det ska "Yes" vara ifylt, osv
-
-				/*
-				 * Du vill foreacha varje garden
-				 * i foreachen vill du se ifall UserId stämmer överens med det nuvarande inloggade UserId
-				 * Spara GardenId
-				 * 
-				 * Du vill sen se ifall PlantGardens GardenId har PlantId:et som details visar
-				 * Ifall det finns en PlantId i GardenId, "Yes" ska vara ifyllt
-				 * Annars "No"
-				 */
-
 			}
 		}
 
@@ -138,12 +93,78 @@ namespace GreenThumb.Windows
 
 		private void rbAddedToGardenTrue_Checked(object sender, RoutedEventArgs e) // Adds the plant to user garden
 		{
+			if (_item != null)
+			{
+				using (GreenThumbDbContext context = new())
+				{
+					MessageBoxResult result = MessageBox.Show("Are you sure you want to add the plant to your garden?", "Adding plant to garden", MessageBoxButton.YesNo);
 
+					if (result == MessageBoxResult.Yes)
+					{
+						UserModel user = UserManager.UserSignedIn;
+
+						var gardenId = context.Gardens
+							.Where(g => g.UserId == user.UserId)
+							.Select(g => g.GardenId)
+							.FirstOrDefault();
+
+						if (gardenId != 0)
+						{
+							PlantModel plantItem = (PlantModel)_item.Tag;
+
+							var plantGarden = new PlantGardens()
+							{
+								GardenId = gardenId,
+								PlantId = plantItem.PlantId,
+								DateAtGarden = DateTime.Now,
+							};
+
+							context.PlantGardens.Add(plantGarden);
+							context.SaveChanges();
+
+							MessageBox.Show("The plant has been added to your garden!", "Plant added to garden");
+						}
+					}
+				}
+			}
 		}
 
 		private void rbAddedToGardenFalse_Checked(object sender, RoutedEventArgs e) // removes the plant from user garden
 		{
+			if (_item != null)
+			{
+				using (GreenThumbDbContext context = new())
+				{
+					PlantModel plantItem = (PlantModel)_item.Tag;
+					GreenThumbRepository<PlantGardens> pgRepository = new(context);
 
+					var userId = UserManager.UserSignedIn.UserId;
+
+					var gardenId = context.Gardens
+						.Where(g => g.UserId == userId)
+						.Select(g => g.GardenId)
+						.FirstOrDefault();
+
+					var plantId = plantItem.PlantId;
+
+					MessageBoxResult result = MessageBox.Show("Are you sure you want to remove plant from your garden?", "Removing plant from garden", MessageBoxButton.YesNo);
+
+					if (result == MessageBoxResult.Yes)
+					{
+						var plantGardenToRemove = pgRepository
+							.GetAll()
+							.FirstOrDefault(pg => pg.GardenId == gardenId && pg.PlantId == plantId);
+
+						if (plantGardenToRemove != null)
+						{
+							context.PlantGardens.Remove(plantGardenToRemove);
+							pgRepository.Complete();
+
+							MessageBox.Show("The plant was removed from your garden!", "Plant removed from garden");
+						}
+					}
+				}
+			}
 		}
 	}
 }

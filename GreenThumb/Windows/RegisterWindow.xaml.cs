@@ -1,5 +1,6 @@
 ﻿using GreenThumb.Database;
 using GreenThumb.Models;
+using System.Globalization;
 using System.Windows;
 
 namespace GreenThumb.Windows
@@ -18,13 +19,11 @@ namespace GreenThumb.Windows
 
 		private async void btnRegister_Click(object sender, RoutedEventArgs e) // Method for registering a new user
 		{
-			// 3. Check if username and Email is available
-
 			// Declaring the variables
 			UserModel newUser = new();
-			newUser.Username = txtNewUsername.Text.Trim();
-			newUser.FirstName = txtNewFirstName.Text.Trim();
-			newUser.LastName = txtNewLastName.Text.Trim();
+			newUser.Username = CapitalizeFirstLetter(txtNewUsername.Text.Trim());
+			newUser.FirstName = CapitalizeFirstLetter(txtNewFirstName.Text.Trim());
+			newUser.LastName = CapitalizeFirstLetter(txtNewLastName.Text.Trim());
 			newUser.Email = txtNewEmail.Text.Trim();
 			newUser.Password = txtNewPassword.Password.Trim();
 
@@ -42,26 +41,20 @@ namespace GreenThumb.Windows
 				using (GreenThumbDbContext context = new())
 				{
 					GreenThumbRepository<UserModel> userRepository = new(context);
+					GreenThumbRepository<GardenModel> gardenRepository = new(context);
 
 					userRepository.Add(newUser);
 					userRepository.Complete();
-					// Kalla på repository (AKA new:a upp i denna rutan)
-					// Lägga till i databasen
-					// Spara ändringar
+
+					GardenModel newGarden = new()
+					{
+						UserId = newUser.UserId
+					};
+
+					gardenRepository.Add(newGarden);
+					gardenRepository.Complete();
+
 				}
-
-				//// TODO: Remove Asynchronic programming
-				//await Task.Run(() =>
-				//{
-				//    using (GreenThumbDbContext context = new())
-				//    {
-				//        GreenThumbRepository<UserModel> greenThumbRepository = new(context);
-				//        // Delaya för att se om async fungerar
-				//        greenThumbRepository.Add(newUser);
-				//        greenThumbRepository.Complete();
-
-				//    }
-				//});
 
 				MessageBox.Show("Account successfully created! Welcome to a greener life!", "Account created");
 
@@ -131,7 +124,6 @@ namespace GreenThumb.Windows
 				return true;
 			}
 		}
-
 		private void CancelToSignInWindow() // Method for returning to SignInWindow
 		{
 			if (txtNewUsername.Text != ""
@@ -157,6 +149,11 @@ namespace GreenThumb.Windows
 				signInWindow.Show();
 				Close();
 			}
+		}
+		private string CapitalizeFirstLetter(string name) // Capitalizing First and Last Name
+		{
+			TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+			return textInfo.ToTitleCase(name);
 		}
 	}
 }
