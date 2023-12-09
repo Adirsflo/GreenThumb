@@ -14,7 +14,8 @@ namespace GreenThumb.Windows
 
 			UpdateUi();
 		}
-		public void UpdateUi() // Updates the windows when starting up
+
+		public void UpdateUi() // Updates the interface when starting up
 		{
 			lstAllPlants.Items.Clear();
 
@@ -33,7 +34,6 @@ namespace GreenThumb.Windows
 			}
 
 			// Fill in all plants in the lstMyTravels
-
 			using (GreenThumbDbContext context = new())
 			{
 				GreenThumbRepository<PlantModel> plantRepository = new(context);
@@ -53,10 +53,39 @@ namespace GreenThumb.Windows
 				}
 			}
 		}
+		private void blkMyGarden_Click(object sender, RoutedEventArgs e) // Accesing the user Garden
+		{
+			MyGardenWindow myGardenWindow = new();
+			myGardenWindow.Show();
+			Close();
+		}
+		private void blkInformation_Click(object sender, RoutedEventArgs e) // Information for Dashboard
+		{
+			MessageBox.Show("Welcome to GreenThumb!\n\n" +
+										"-You can view all plants in the middle of the screen\n" +
+										"-You can search for a specific plant under \"Search Plant\"\n" +
+										"-To view a certain plant, select the plant and then click on \"Details\"\n" +
+										"-If you wish to add a new plant for other users to view, click on \"Add Plant\"\n" +
+										"-To remove a plant from all users, select the plant and then click on \"Remove\"\n" +
+										"-On your upper right corner, you can choose to view your Garden, or click on \"Sign Out\"", "Information - Navigation");
+		}
+		private void btnSignOut_Click(object sender, RoutedEventArgs e) // Signing out user
+		{
+			MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "Signing out", MessageBoxButton.YesNo);
+			if (result == MessageBoxResult.Yes)
+			{
+				UserManager.UserSignedIn = null;
 
+				MessageBox.Show("Thank you for thinking green!", "Signing out");
+				SignInWindow signInWindow = new();
+				signInWindow.Show();
+				Close();
+			}
+		}
 		private void txtSearchPlant_TextChanged(object sender, TextChangedEventArgs e) // Searches for plants by input
 		{
-			string searchPlantByInput = txtSearchPlant.Text.ToLower();
+			lstAllPlants.Items.Clear();
+			string searchPlants = txtSearchPlant.Text.ToLower();
 
 			using (GreenThumbDbContext context = new())
 			{
@@ -64,8 +93,7 @@ namespace GreenThumb.Windows
 
 				var allPlants = plantRepository.GetAll();
 
-				lstAllPlants.Items.Clear();
-				var filteredPlants = allPlants.Where(p => p.Name.ToLower().Contains(searchPlantByInput));
+				var filteredPlants = allPlants.Where(p => p.Name.ToLower().Contains(searchPlants));
 				foreach (var plant in filteredPlants)
 				{
 					ListViewItem item = new();
@@ -80,20 +108,6 @@ namespace GreenThumb.Windows
 				}
 			}
 		}
-
-		private void blkMyGarden_Click(object sender, RoutedEventArgs e) // Accesing the user Garden
-		{
-			MyGardenWindow myGardenWindow = new();
-			myGardenWindow.Show();
-			Close();
-		}
-
-		private void blkInformation_Click(object sender, RoutedEventArgs e) // TODO: Fix this function
-		{
-			// FIX THIS FUNCTION
-			MessageBox.Show("Information about how to use the application will be displayed here!", "Information");
-		}
-
 		private void btnDetails_Click(object sender, RoutedEventArgs e) // Shows details of the selected plant in a new window
 		{
 			ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
@@ -109,21 +123,19 @@ namespace GreenThumb.Windows
 				MessageBox.Show("Please select a plant to view.", "Warning");
 			}
 		}
-
-		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Opens a new window for adding plant to database
+		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Opens a new window for adding plant to Db
 		{
 			AddPlantWindow addWindow = new();
 			addWindow.Show();
 			Close();
 		}
-
-		private void btnRemove_Click(object sender, RoutedEventArgs e) // Removes plant from database
+		private void btnRemove_Click(object sender, RoutedEventArgs e) // Removes plant from Db
 		{
 			ListBoxItem selectedItem = (ListBoxItem)lstAllPlants.SelectedItem;
 
 			if (selectedItem != null)
 			{
-				MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this plant?", "Removing plant", MessageBoxButton.YesNo);
+				MessageBoxResult result = MessageBox.Show("The plant will also be removed from all gardens.\nAre you sure you want to delete this plant?", "Removing plant", MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.Yes)
 				{
 					using (GreenThumbDbContext context = new())
@@ -145,20 +157,5 @@ namespace GreenThumb.Windows
 				MessageBox.Show("Please select a plant to remove.", "Warning");
 			}
 		}
-
-		private void btnSignOut_Click(object sender, RoutedEventArgs e) // Signing out user
-		{
-			MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "Signing out", MessageBoxButton.YesNo);
-			if (result == MessageBoxResult.Yes)
-			{
-				UserManager.UserSignedIn = null;
-
-				MessageBox.Show("Thank you for thinking green!", "Signing out");
-				SignInWindow signInWindow = new();
-				signInWindow.Show();
-				Close();
-			}
-		}
-
 	}
 }

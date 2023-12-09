@@ -12,10 +12,16 @@ namespace GreenThumb.Windows
 			InitializeComponent();
 		}
 
-		private void blkInformation_Click(object sender, RoutedEventArgs e) // TODO: Edit instructions of the window
+		private void blkInformation_Click(object sender, RoutedEventArgs e) // Information about AddPlantsWindow
 		{
-			// TODO: Edit instructions of the window
-			MessageBox.Show("Information displayed here");
+			MessageBox.Show("Welcome to the Plant-Adding Section!\n\n" +
+										"-You can insert information about the plant on the upper part of the screen\n" +
+										"-You need to add atleast one instruction for the plant under \"Instruction Advice\"\n" +
+										"-To add an instruction, click on \"Add\"\n" +
+										"-If you wish to remove an instruction, click on \"Remove\"\n" +
+										"-To view an added instruction in detail, select the instruction under \"Added Instruction\"\n" +
+										"-When you are done and ready to add the plant, click on \"Add Plant\"\n" +
+										"-On your upper right corner, you can return to dashboard by clicking on \"Back\"", "Information - Navigation");
 		}
 		private void btnBack_Click(object sender, RoutedEventArgs e) // Method for returning to DetailsWindow
 		{
@@ -23,10 +29,10 @@ namespace GreenThumb.Windows
 		}
 		private void CancelToDetailsWindow() // Checking if user has inputted information
 		{
-			if (txtNewPlantName.Text != ""
-					|| txtNewPlantDescription.Text != ""
-					|| txtNewInstructionName.Text != ""
-					|| txtNewInstructionDescription.Text != ""
+			if (!string.IsNullOrWhiteSpace(txtNewPlantName.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewPlantDescription.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewInstructionName.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewInstructionDescription.Text)
 					|| lstAddInstruction.Items.Count != 0)
 			{
 				MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel?" +
@@ -69,7 +75,7 @@ namespace GreenThumb.Windows
 			}
 			else
 			{
-				MessageBox.Show("Please fill in the instruction fields", "Warning");
+				MessageBox.Show("Error: Please fill in the instruction fields", "Warning");
 			}
 		}
 		private void btnRemoveInstruction_Click(object sender, RoutedEventArgs e) // Removing instructions from the new plant
@@ -79,18 +85,35 @@ namespace GreenThumb.Windows
 			if (selectedItem != null)
 			{
 				lstAddInstruction.Items.Remove(selectedItem);
+
+				brdInstruction.SetValue(Grid.ColumnSpanProperty, 3);
+				txtAddedInstructionDescription.Visibility = Visibility.Hidden;
+				txtAddedInstructionDescription.Text = string.Empty;
+
 				MessageBox.Show("Instruction removed");
 			}
 			else if (lstAddInstruction.Items.Count != 0)
 			{
-				MessageBox.Show("Please select an instruction to remove", "Warning");
+				MessageBox.Show("Error: Please select an instruction to remove", "Warning");
 			}
 			else
 			{
-				MessageBox.Show("There are no instructions to remove", "Warning");
+				MessageBox.Show("Error: There are no instructions to remove", "Warning");
 			}
 		}
-		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Adding plant to database
+		private void lstAddInstruction_SelectionChanged(object sender, SelectionChangedEventArgs e) // Views the added instruction details
+		{
+			ListViewItem selectedItem = (ListViewItem)lstAddInstruction.SelectedItem;
+
+			if (selectedItem != null)
+			{
+				InstructionModel selectedInstruction = (InstructionModel)selectedItem.Tag;
+				brdInstruction.SetValue(Grid.ColumnSpanProperty, 4);
+				txtAddedInstructionDescription.Visibility = Visibility.Visible;
+				txtAddedInstructionDescription.Text = selectedInstruction.Description;
+			}
+		}
+		private void btnAddPlant_Click(object sender, RoutedEventArgs e) // Adding plant to Db
 		{
 			PlantModel newPlant = new();
 			newPlant.Name = txtNewPlantName.Text.Trim();
@@ -169,11 +192,10 @@ namespace GreenThumb.Windows
 		{
 			using (GreenThumbDbContext context = new())
 			{
-				GreenThumbRepository<PlantModel> plantRepository = new(context);
+				PlantRepository plantRepository = new(context);
+				var plantInDb = plantRepository.GetPlantByName(plantCheck);
 
-				var gatherName = context.Plants.Where(p => p.Name == plantCheck).ToList();
-
-				if (gatherName.ToString() == plantCheck || gatherName.Count == 0)
+				if (plantInDb.ToString() == plantCheck || plantInDb.Count() == 0)
 				{
 					return false;
 				}

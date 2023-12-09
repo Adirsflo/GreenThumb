@@ -12,14 +12,39 @@ namespace GreenThumb.Windows
 			InitializeComponent();
 		}
 
-		private void btnCancel_Click(object sender, RoutedEventArgs e)
+		private void btnCancel_Click(object sender, RoutedEventArgs e) // Returns to SignInWindow
 		{
 			CancelToSignInWindow();
 		}
-
+		private void CancelToSignInWindow() // Method for returning to SignInWindow
+		{
+			if (!string.IsNullOrWhiteSpace(txtNewUsername.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewFirstName.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewLastName.Text)
+					|| !string.IsNullOrWhiteSpace(txtNewPassword.Password)
+					|| !string.IsNullOrWhiteSpace(txtConfirmPassword.Password)
+					|| !string.IsNullOrWhiteSpace(txtNewEmail.Text))
+			{
+				MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel?" +
+						"\n\nYour progress will not be saved!",
+						"Warning", MessageBoxButton.YesNo);
+				if (result == MessageBoxResult.Yes)
+				{
+					SignInWindow signInWindow = new();
+					signInWindow.Show();
+					Close();
+				}
+			}
+			else
+			{
+				SignInWindow signInWindow = new();
+				signInWindow.Show();
+				Close();
+			}
+		}
 		private async void btnRegister_Click(object sender, RoutedEventArgs e) // Method for registering a new user
 		{
-			// Declaring the variables
+			// Declaring the variables and capitalizes the first letters of each word
 			UserModel newUser = new();
 			newUser.Username = CapitalizeFirstLetter(txtNewUsername.Text.Trim().ToLower());
 			newUser.FirstName = CapitalizeFirstLetter(txtNewFirstName.Text.Trim().ToLower());
@@ -27,15 +52,14 @@ namespace GreenThumb.Windows
 			newUser.Email = txtNewEmail.Text.Trim().ToLower();
 			newUser.Password = txtNewPassword.Password.Trim();
 
-			// Handeling exceptions: catches the error if its null, empty or doesnt contain "@"
+			// Handeling exceptions: catches the error if its null, empty or doesnt contain "@" in email
 			try
 			{
-				ValidateInputsAsync();
+				ValidateInputs();
 
 				if (await IsUsernameInUseAsync(txtNewUsername.Text, txtNewEmail.Text))
 				{
-					MessageBox.Show("Username or email is already in use. Please choose a different username or email.");
-					return;
+					throw new ArgumentException("Username or email is already in use. Please choose a different username or email.");
 				}
 
 				using (GreenThumbDbContext context = new())
@@ -53,7 +77,6 @@ namespace GreenThumb.Windows
 
 					gardenRepository.Add(newGarden);
 					gardenRepository.Complete();
-
 				}
 
 				MessageBox.Show("Account successfully created! Welcome to a greener life!", "Account created");
@@ -72,30 +95,30 @@ namespace GreenThumb.Windows
 				MessageBox.Show($"Unexpected error: {ex.Message}");
 			}
 		}
-		private void ValidateInputsAsync()
+		private void ValidateInputs() // Validates the inputs from user
 		{
-			ValidateNotEmptyAsync(txtNewUsername.Text, "Username");
-			ValidateNotEmptyAsync(txtNewFirstName.Text, "First name");
-			ValidateNotEmptyAsync(txtNewLastName.Text, "Last name");
-			ValidateNotEmptyAsync(txtNewEmail.Text, "Email");
-			ValidateEmailFormatAsync(txtNewEmail.Text);
-			ValidatePasswordAsync(txtNewPassword.Password, txtConfirmPassword.Password);
+			ValidateNotEmpty(txtNewUsername.Text, "Username");
+			ValidateNotEmpty(txtNewFirstName.Text, "First name");
+			ValidateNotEmpty(txtNewLastName.Text, "Last name");
+			ValidateNotEmpty(txtNewEmail.Text, "Email");
+			ValidateEmailFormat(txtNewEmail.Text);
+			ValidatePassword(txtNewPassword.Password, txtConfirmPassword.Password);
 		}
-		private void ValidateNotEmptyAsync(string input, string fieldName)
+		private void ValidateNotEmpty(string input, string fieldName) // Sends error if empty
 		{
 			if (string.IsNullOrEmpty(input))
 			{
 				throw new ArgumentException($"{fieldName} cannot be empty.");
 			}
 		}
-		private void ValidateEmailFormatAsync(string email)
+		private void ValidateEmailFormat(string email) // Sends error if there is no "@"
 		{
 			if (!email.Contains("@"))
 			{
 				throw new ArgumentException("Invalid input for email. The email must contain the \"@\" symbol.");
 			}
 		}
-		private void ValidatePasswordAsync(string newPassword, string confirmPassword)
+		private void ValidatePassword(string newPassword, string confirmPassword) // Sends error for password
 		{
 			if (string.IsNullOrEmpty(newPassword) && string.IsNullOrEmpty(confirmPassword))
 			{
@@ -106,7 +129,7 @@ namespace GreenThumb.Windows
 				throw new ArgumentException("The password doesn't match. Please try again.");
 			}
 		}
-		private async Task<bool> IsUsernameInUseAsync(string usernameCheck, string emailCheck)
+		private async Task<bool> IsUsernameInUseAsync(string usernameCheck, string emailCheck) // Checks if username and email is in Db
 		{
 			using (GreenThumbDbContext context = new())
 			{
@@ -122,32 +145,6 @@ namespace GreenThumb.Windows
 				}
 
 				return true;
-			}
-		}
-		private void CancelToSignInWindow() // Method for returning to SignInWindow
-		{
-			if (txtNewUsername.Text != ""
-					|| txtNewFirstName.Text != ""
-					|| txtNewLastName.Text != ""
-					|| txtNewPassword.Password != ""
-					|| txtConfirmPassword.Password != ""
-					|| txtNewEmail.Text != "")
-			{
-				MessageBoxResult result = MessageBox.Show("Are you sure you want to cancel?" +
-						"\n\nYour progress will not be saved!",
-						"Warning", MessageBoxButton.YesNo);
-				if (result == MessageBoxResult.Yes)
-				{
-					SignInWindow signInWindow = new();
-					signInWindow.Show();
-					Close();
-				}
-			}
-			else
-			{
-				SignInWindow signInWindow = new();
-				signInWindow.Show();
-				Close();
 			}
 		}
 		private string CapitalizeFirstLetter(string name) // Capitalizing First and Last Name

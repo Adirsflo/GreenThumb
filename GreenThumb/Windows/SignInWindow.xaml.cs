@@ -16,12 +16,12 @@ namespace GreenThumb.Windows
 			registerWindow.Show();
 			Close();
 		}
-
 		private void btnSignIn_Click(object sender, RoutedEventArgs e) // Attempting to log in user
 		{
 			string username = txtUsername.Text.ToLower();
 			string password = txtPassword.Password;
 
+			// Validates username and password & eventually sends error messages to user
 			bool isSignedIn = UserManager.SignInUser(username, password);
 
 			if (isSignedIn)

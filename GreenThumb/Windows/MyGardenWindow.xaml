@@ -40,10 +40,10 @@
         <Label Grid.Column="1" Grid.Row="3" Content="Search in Garden" HorizontalAlignment="Left" Margin="0 13 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="3" Content="Plant Name" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="4" Grid.Row="4" Content="Plant Description" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
-        <Label Grid.Column="4" Grid.Row="5" Content="Added to Garden" HorizontalAlignment="Left" Margin="5 -4 0 0" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="4" Grid.Row="5" Content="Added to Garden" HorizontalAlignment="Left" Margin="6 15 0 0" VerticalAlignment="Top" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
         <Label Grid.Column="5" Grid.Row="6" Content="Instructions" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="18" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
-        <Label Grid.Column="4" Grid.Row="6" Content="Title" HorizontalAlignment="Left" Margin="5 0 0 -12" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
-        <Label Grid.Column="4" Grid.Row="7" Content="Instructions" HorizontalAlignment="Left" Margin="5 0 0 -12" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="4" Grid.Row="6" Content="Title" HorizontalAlignment="Left" Margin="5 0 0 -3" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <Label Grid.Column="4" Grid.Row="7" Content="Instructions" HorizontalAlignment="Left" Margin="5 0 0 -11" VerticalAlignment="Bottom" FontSize="13" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
 
         <ListView Name="lstMyPlants" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="6" Margin="5 30 5 10" SelectionChanged="lstMyPlants_SelectionChanged">
             <ListView.View>
@@ -56,12 +56,12 @@
         <ListView Name="lstInstructions" Grid.Column="5" Grid.Row="7" Grid.RowSpan="3" Margin="5 0 10 10" SelectionChanged="lstInstructions_SelectionChanged"/>
 
         <TextBox Name="txtSearchInGarden" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Height="30" Margin="5 30 5 -30" VerticalContentAlignment="Center" TextChanged="txtSearchInGarden_TextChanged"/>
-        <TextBox Name="txtPlantName" Grid.Column="5" Grid.Row="3" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
-        <TextBox Name="txtPlantDescription" Grid.Column="5" Grid.Row="4" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap" IsReadOnly="True"/>
-        <TextBox Name="txtInstructionTitle" Grid.Column="4" Grid.Row="7" Height="30" Margin="10 0 5 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
+        <TextBox Name="txtPlantName" Grid.Column="5" Grid.Row="3" Height="30" Margin="5 0 10 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
+        <TextBox Name="txtPlantDescription" Grid.Column="5" Grid.Row="4" Grid.RowSpan="2" Margin="5 8 10 -12" VerticalContentAlignment="Top" TextWrapping="Wrap" IsReadOnly="True"/>
+        <TextBox Name="txtInstructionTitle" Grid.Column="4" Grid.Row="7" Height="30" Margin="10 -15 5 0" VerticalContentAlignment="Center" IsReadOnly="True"/>
         <TextBox Name="txtInstructionDescription" Grid.Column="4" Grid.Row="8" Grid.RowSpan="2" Margin="10 8 5 10" VerticalContentAlignment="Top" TextWrapping="Wrap" IsReadOnly="True"/>
 
-        <DatePickerTextBox Name="dpAddedToGarden" Grid.Column="4" Grid.Row="5" VerticalAlignment="Bottom" Margin="10 0 5 8" Text="*INSERT DATE*" IsEnabled="False" BorderBrush="Gray" BorderThickness="1" IsReadOnly="True"/>
+        <DatePickerTextBox Name="dpAddedToGarden" Grid.Column="4" Grid.Row="5" VerticalAlignment="Bottom" Margin="10 0 5 -12" Text=" " IsEnabled="False" BorderBrush="Gray" BorderThickness="1" IsReadOnly="True"/>
         
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
         <Hyperlink Click="blkInformation_Click" FontStyle="Normal">

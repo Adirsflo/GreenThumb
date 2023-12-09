@@ -28,21 +28,6 @@ namespace GreenThumb.Database
 			_dbSet.Add(entity);
 		}
 
-		public void Update(int id, T entity)
-		{
-			T? entityToUpdate = GetById(id);
-
-			if (entityToUpdate != null)
-			{
-				var properties = typeof(T).GetProperties();
-				foreach (var property in properties)
-				{
-					var newValue = property.GetValue(entityToUpdate);
-					property.SetValue(entityToUpdate, newValue);
-				}
-			}
-		}
-
 		public void Delete(int id)
 		{
 			T? entityToDelete = GetById(id);

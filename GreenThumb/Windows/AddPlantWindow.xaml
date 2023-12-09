@@ -32,8 +32,8 @@
         </Grid.RowDefinitions>
 
         <Border Grid.Column="5" Grid.Row="1" Margin="-20 0 0 0" Background="#B9E458" CornerRadius="5"/>
-        <Border Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="-10 -25 -2 0" Background="#B9E458" CornerRadius="5"/>
-        <Border Grid.Column="2" Grid.Row="7" Grid.RowSpan="4" Grid.ColumnSpan="3" Margin="-10 5 0 0" Background="#B9E458" CornerRadius="10"/>
+        <Border Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="4" Margin="-10 -25 -8 0" Background="#B9E458" CornerRadius="5"/>
+        <Border Name="brdInstruction" Grid.Column="2" Grid.Row="7" Grid.RowSpan="4" Grid.ColumnSpan="3" Margin="-10 5 0 0" Background="#B9E458" CornerRadius="10"/>
 
         <Image Grid.Column="5" Grid.Row="1" HorizontalAlignment="Left" Height="30" Width="30" Margin="-5 0 0 0" Source="/Image/GreenThumbIMG.png" Stretch="UniformToFill"/>
 
@@ -52,7 +52,10 @@
         <TextBox Name="txtNewInstructionName" Grid.Column="3" Grid.Row="8" Height="30" Margin="0 0 5 0" VerticalContentAlignment="Center"/>
         <TextBox Name="txtNewInstructionDescription" Grid.Column="3" Grid.Row="9" Grid.RowSpan="2" Margin="0 8 5 8" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
 
-        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="8" Grid.RowSpan="3" Margin="2 4 10 8"/>
+        <Label Name="lblAddedInstructionDescription" Grid.Column="5" Grid.Row="7" Content="Added Description" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="15" FontFamily="Arial" FontWeight="DemiBold" Foreground="#023733"/>
+        <TextBox Name="txtAddedInstructionDescription" Grid.Column="5" Grid.Row="8" Grid.RowSpan="3" Margin="2 4 10 8" VerticalContentAlignment="Top" TextWrapping="Wrap" Visibility="Hidden" IsReadOnly="True"/>
+
+        <ListView Name="lstAddInstruction" Grid.Column="4" Grid.Row="8" Grid.RowSpan="3" Margin="2 4 10 8" SelectionChanged="lstAddInstruction_SelectionChanged"/>
 
         <TextBlock Name="blkInformation" Grid.Column="5" Grid.Row="1" Margin="40 0 0 0" FontFamily="Arial" HorizontalAlignment="Left" VerticalAlignment="Center">  
             <Hyperlink Click="blkInformation_Click" FontStyle="Normal">
@@ -67,7 +70,7 @@
         </TextBlock>
 
         <Button Name="btnBack" Grid.Column="5" Grid.Row="1" Height="25" Width="60" Margin="0 0 10 0" HorizontalAlignment="Right" Content="Back" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnBack_Click"/>
-        <Button Name="btnAddPlant" Grid.Column="4" Grid.Row="6" Height="30" Width="80" Margin="5 0 0 7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add Plant" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733" Click="btnAddPlant_Click"/>
+        <Button Name="btnAddPlant" Grid.Column="4" Grid.Row="6" Height="30" Width="80" Margin="15 0 0 7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add Plant" FontFamily="Arial" BorderBrush="#023733" Background="#B9E458" Foreground="#023733" Click="btnAddPlant_Click"/>
         <Button Name="btnAddInstruction" Grid.Column="2" Grid.Row="10" Height="30" Width="60" Margin="10 0 0 5" HorizontalAlignment="Left" Content="Add" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnAddInstruction_Click"/>
         <Button Name="btnRemoveInstruction" Grid.Column="2" Grid.Row="10" Height="30" Width="60" Margin="0 0 10 5" HorizontalAlignment="Right" Content="Remove" FontFamily="Arial" BorderBrush="#B9E458" Background="#023733" Foreground="#B9E458" Click="btnRemoveInstruction_Click"/>
     </Grid>
